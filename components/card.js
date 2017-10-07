@@ -34,7 +34,7 @@ export default class Card extends Component {
         Animated.decay(this.pan, {
           velocity: {x:3 * direction, y:0},
           deceleration: 0.995,
-        }).start()
+        }).start(this.props.onSwipeOff)
       } else {
         //bounce card to center
         Animated.spring(this.pan,{

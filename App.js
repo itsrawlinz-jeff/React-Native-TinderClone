@@ -1,14 +1,26 @@
 import React, {Component} from 'react'
 import Card from './components/card'
 import {View} from 'react-native'
+
 export default class App extends Component {
-  render(){
-    return(
+  state = {
+    profileIndex: 0,
+  }
+
+  nextCard = () => {this.setState({profileIndex: this.state.profileIndex + 1})
+  }
+
+  render() {
+    const {profileIndex} = this.state
+    return (
       <View style={{flex:1}}>
-        {profiles.reverse().map((profile, i) => {
+        {profiles.slice(profileIndex, profileIndex + 3).reverse().map((profile) => {
           return (
-          <Card
-            profile={profile} key={i}/>
+            <Card
+              key={profile.id}
+              profile={profile}
+              onSwipeOff={this.nextCard}
+            />
           )
         })}
       </View>
