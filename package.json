@@ -9,6 +9,7 @@
     "expo": "^21.0.0",
     "firebase": "^4.5.0",
     "geofire": "^4.1.2",
+    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-21.0.2.tar.gz",

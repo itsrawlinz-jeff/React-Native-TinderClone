@@ -32,13 +32,12 @@ export default class Login extends Component {
     })
   }
 
-  goHome(user){
+  goHome(user) {
     const resetAction = NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({
-          routeName: 'Home',
-          params: {user}
-        })]
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home', params:{user}}),
+      ],
     })
     this.props.navigation.dispatch(resetAction)
 
@@ -51,7 +50,12 @@ export default class Login extends Component {
   }
   //firebase.google.com/docs/database.web/read-write
   createUser = (uid, userData) => {
-    firebase.database().ref('users').child(uid).update({...userData, uid})
+    const defaults = {
+      uid,
+      distance: 5,
+      ageRange: [18, 24],
+    }
+    firebase.database().ref('users').child(uid).update({...userData, ...defaults})
   }
 
   //taken from https://docs.expo.io/versions/latest/sdk/facebook.html
