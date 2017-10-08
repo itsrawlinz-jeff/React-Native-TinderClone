@@ -3,7 +3,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 
-export default (profiles, user) => {
+export default (profiles, user, swipedProfiles) => {
   const rejectMe = _.reject(profiles, profile => profile.uid === user.uid)
 
   const filterGender = _.filter(rejectMe, profile => {
@@ -31,5 +31,10 @@ export default (profiles, user) => {
 
   const filtered = _.uniqBy(filterAgeRange, 'uid')
 
-  return filtered
+  const filterSwiped = _.filter(filtered, profile => {
+    const swiped = profile.uid in swipedProfiles
+    return !swiped
+  })
+
+  return filterSwiped
 }
