@@ -1,31 +1,48 @@
 import Expo from 'expo'
 import firebase from 'firebase'
 import React, {Component} from 'react'
-import {View, StyleSheet} from 'react-native'
+import {View, StyleSheet, ActivityIndicator} from 'react-native'
 import {NavigationActions} from 'react-navigation'
 import FacebookButton from '../components/facebookButton'
 
 
 export default class Login extends Component {
 
+  state = {
+    showSpinner: true,
+  }
+
   //login authentication
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({
-              routeName: 'Home',
-              params: {
-                uid: user.uid
-              }
-            })]
+    // firebase.auth().signOut()
+    firebase.auth().onAuthStateChanged(auth => {
+      if (auth) {
+        this.firebaseRef = firebase.database().ref('users') // creating a reference to this particular firebase call so that we can access it later.
+        //the .on('value') means that our callback function will be executed everytime our users data is updated in firebase
+        this.firebaseRef.child(auth.uid).on('value', snap => {
+          const user = snap.val()
+          if(user != null){
+            this.firebaseRef.child(auth.uid).off('value') //this is going to stop callbacks from being executed when our user is updated.
+            this.goHome(user)
+          }
         })
-        this.props.navigation.dispatch(resetAction)
+      } else {
+        this.setState({showSpinner:false})
       }
     })
   }
 
+  goHome(user){
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({
+          routeName: 'Home',
+          params: {user}
+        })]
+    })
+    this.props.navigation.dispatch(resetAction)
+
+  }
   //facebook authentication setup
   authenticate = (token) => {
     const provider = firebase.auth.FacebookAuthProvider
@@ -34,11 +51,12 @@ export default class Login extends Component {
   }
   //firebase.google.com/docs/database.web/read-write
   createUser = (uid, userData) => {
-    firebase.database().ref('users').child(uid).update(userData)
+    firebase.database().ref('users').child(uid).update({...userData, uid})
   }
 
   //taken from https://docs.expo.io/versions/latest/sdk/facebook.html
   login = async() => {
+    this.setState({showSpinner:true})
     const APP_ID = '314966862304637'
     const options = {
       permissions: ['public_profile', 'email', 'user_birthday', 'user_work_history']
@@ -62,7 +80,10 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <FacebookButton onPress={this.login}/>
+        {this.state.showSpinner ?
+          <ActivityIndicator animating={this.state.showSpinner} /> :
+          <FacebookButton onPress={this.login} />
+        }
       </View>
     )
   }

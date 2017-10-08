@@ -2,6 +2,7 @@ import Expo from 'expo'
 import React, {Component} from 'react'
 import Card from '../components/card'
 import SimpleScroller from '../components/simpleScroller'
+import Profile from './profile'
 import {View} from 'react-native'
 import * as firebase from 'firebase'
 import GeoFire from 'geofire'
@@ -9,12 +10,13 @@ import GeoFire from 'geofire'
 export default class Home extends Component {
   state = {
     profileIndex: 0,
-    profiles: []
+    profiles: [],
+    user: this.props.navigation.state.params.user
   }
 
   //loads data just once from our database. The once function takes 2 arguments. What events you are listening for and a function that will be executed once we recieve data from firebase
   componentWillMount() {
-    const{uid} = this.props.navigation.state.params
+    const{uid} = this.props.navigation.state.params.user
     this.updateUserLocation(uid)
     this.getProfiles(uid)
   }
@@ -78,7 +80,7 @@ getProfiles = async (uid) => {
     return (
       <SimpleScroller
       screens={[
-        <View style={{flex:1, backgroundColor:'red'}}/>,
+        <Profile user={this.state.user}/>,
         this.cardStack()
       ]}/>
     )
