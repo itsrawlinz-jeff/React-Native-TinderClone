@@ -4,7 +4,7 @@ import {Image, PixelRatio} from 'react-native'
 export default class CircleImage extends Component {
   render(){
     const {size, facebookID} = this.props
-    const imageSize = PixelRatio.getPixelSizeForLayoutSize(size)
+    const imageSize = PixelRatio.getPixelSizeForLayoutSize(size) //for image optimization for different devices
     const fbImage = `https://graph.facebook.com/${facebookID}/picture?height=${imageSize}`
     return(
       <Image

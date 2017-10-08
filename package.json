@@ -12,6 +12,7 @@
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-21.0.2.tar.gz",
+    "react-native-multislider": "0.0.14",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git"
   },
   "devDependencies": {
