@@ -3,6 +3,7 @@ import {
   ListView,
   Text,
   View,
+  TouchableHighlight,
 } from 'react-native'
 
 import * as firebase from 'firebase'
@@ -53,14 +54,16 @@ export default class Matches extends Component {
 renderRow = (rowData) => {
   const {id, first_name, work} = rowData
   const bio = (work && work[0] && work[0].position) ? work[0].position.name : null
-  return (
-    <View style={{flexDirection:'row', backgroundColor:'white', padding:10}}>
-     <CircleImage size={80} facebookID={id} />
-       <View style={{justifyContent:'center', marginLeft:10}}>
-        <Text style={{fontSize:18}}>{first_name}</Text>
-        <Text style={{fontSize:15, color:'darkgrey'}}>{bio}</Text>
+    return (
+    <TouchableHighlight onPress={() => this.props.navigation.navigate('Chat', {user:this.props.user, profile:rowData})}>
+      <View style={{flexDirection:'row', backgroundColor:'white', padding:10}}>
+       <CircleImage size={80} facebookID={id} />
+         <View style={{justifyContent:'center', marginLeft:10}}>
+          <Text style={{fontSize:18}}>{first_name}</Text>
+          <Text style={{fontSize:15, color:'darkgrey'}}>{bio}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableHighlight>
   )
 }
 
@@ -81,36 +84,3 @@ renderSeparator = (sectionID, rowID) => {
     )
   }
 }
-
-
-
-// id: '727957756',
-// first_name: 'jayNat',
-//
-// id: '678220507',
-// first_name: 'Mitzy',
-//
-// id: '100005106304238',
-// first_name: 'Sam',
-//
-// id: '643723857',
-// first_name: 'Jackson',
-//
-// id: '577300564',
-// first_name: 'Pedro',
-//
-// id: '740949342',
-// first_name: 'Michael',
-//
-//
-// id: '884600234',
-// first_name: 'Valentine',
-//
-// id: '615006411',
-// first_name: 'Gene',
-//
-// id: 'Chris',
-// first_name: '521323281',
-//
-// id: '800628451',
-// first_name: 'Stammy',

@@ -120,7 +120,7 @@ export default class Home extends Component {
         screens={[
           <Profile user={this.state.user} />,
           this.cardStack(),
-          <Matches user={this.state.user}/>
+          <Matches navigation={this.props.navigation} user={this.state.user}/>
           ]}
       />
     )
