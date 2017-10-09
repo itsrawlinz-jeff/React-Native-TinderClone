@@ -5,6 +5,7 @@ import * as firebase from 'firebase'
 import GeoFire from 'geofire'
 
 import Profile from './profile'
+import Matches from './match'
 
 import Card from '../components/card'
 import SimpleScroller from '../components/simpleScroller'
@@ -119,6 +120,7 @@ export default class Home extends Component {
         screens={[
           <Profile user={this.state.user} />,
           this.cardStack(),
+          <Matches user={this.state.user}/>
           ]}
       />
     )

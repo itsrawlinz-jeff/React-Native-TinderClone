@@ -15,7 +15,8 @@ export default class SimpleScroller extends Component {
     this.scrollResponder = PanResponder.create({
       //below are all the responder callbacks
       //active responder when it is touched = true
-      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponder: () => false,
+      onMoveShouldSetPanResponder: (e, {dx, dy}) => Math.abs(dx) > Math.abs(dy),
       onPanResponderGrant:() => {
         this.pan.setOffset(this.pan._value)
         this.pan.setValue(0)
@@ -28,23 +29,26 @@ export default class SimpleScroller extends Component {
         //connecting the distance along the x axis to this.pan. When the touch moved along the x axis it will update the animated value
         {dx:this.pan},
       ]),
-      //this centers the screen on release
-      //vx is the velocity along the x axis
-      onPanResponderRelease: (e, {vx}) => {
-        this.pan.flattenOffset() // this will take whatever value is in the offset and add it to the base animated value.
-        let move = Math.round(this.pan._value / width) * width
-        if (Math.abs(vx) > 0.25) {
-          const direction = vx / Math.abs(vx) // will return either 1 for swipe right or -1 for swipe left
-          const scrollPos = direction > 0 ? Math.ceil(this.pan._value / width) : Math.floor(this.pan._value / width) // will return either 0, -1 or -2
-          move = scrollPos * width
-        }
-        const minScroll = (this.props.screens.length -1) * -width
-        Animated.spring(this.pan, {
-          toValue: this.clamp(move, minScroll, 0),
-          bounciness: 0,
-        }).start()
-      },
+      onPanResponderReject: this.handlePanResponderEnd,
+      onPanResponderRelease: this.handlePanResponderEnd,
     })
+  }
+
+  //this centers the screen on release
+  //vx is the velocity along the x axis
+  handlePanResponderEnd = (e, {vx}) => {
+    this.pan.flattenOffset() // this will take whatever value is in the offset and add it to the base animated value.
+    let move = Math.round(this.pan._value / width) * width
+    if (Math.abs(vx) > 0.25) {
+      const direction = vx / Math.abs(vx) // will return either 1 for swipe right or -1 for swipe left
+      const scrollPos = direction > 0 ? Math.ceil(this.pan._value / width) : Math.floor(this.pan._value / width) // will return either 0, -1 or -2
+      move = scrollPos * width
+    }
+    const minScroll = (this.props.screens.length -1) * -width
+    Animated.spring(this.pan, {
+      toValue: this.clamp(move, minScroll, 0),
+      bounciness: 0,
+    }).start()
   }
 
   clamp = (num, min, max) => {
@@ -74,7 +78,7 @@ export default class SimpleScroller extends Component {
 const styles = StyleSheet.create({
   scroller:{
     flex:1,
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     flexDirection: 'row', //flex default is column
   }
 })
