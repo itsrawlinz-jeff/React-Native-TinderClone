@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
   },
   profile: {
-    flex:1,
+    height: "55%",
     alignItems:'center',
     justifyContent:'center',
   },

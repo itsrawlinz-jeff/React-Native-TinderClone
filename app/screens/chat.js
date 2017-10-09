@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {View} from 'react-native'
 import * as firebase from 'firebase'
+import Nav from '../components/nav'
 
 import {GiftedChat} from 'react-native-gifted-chat'
 

@@ -12,6 +12,8 @@ import SimpleScroller from '../components/simpleScroller'
 
 import filter from '../modules/filter'
 
+import Nav from '../components/nav'
+
 export default class Home extends Component {
 
   state = {
@@ -54,7 +56,6 @@ export default class Home extends Component {
     })
     geoQuery.on('key_entered', async (uid, location, distance) => {
       const user = await this.getUser(uid)
-      console.log(user.val().first_name)
       const profiles = [...this.state.profiles, user.val()]
       const filtered = filter(profiles, this.state.user, swipedProfiles)
       this.setState({profiles: filtered})
@@ -72,7 +73,6 @@ export default class Home extends Component {
 
       const geoFireRef = new GeoFire(firebase.database().ref('geoData'))
       geoFireRef.set(uid, [latitude, longitude])
-
       console.log('Permission Granted', location)
     } else {
       console.log('Permission Denied')
@@ -116,13 +116,16 @@ export default class Home extends Component {
 
   render() {
     return (
-      <SimpleScroller
-        screens={[
-          <Profile user={this.state.user} />,
-          this.cardStack(),
-          <Matches navigation={this.props.navigation} user={this.state.user}/>
-          ]}
-      />
+      <View>
+        <Nav />
+        <SimpleScroller
+          screens={[
+            <Profile user={this.state.user} />,
+            this.cardStack(),
+            <Matches navigation={this.props.navigation} user={this.state.user}/>
+            ]}
+        />
+      </View>
     )
   }
 }

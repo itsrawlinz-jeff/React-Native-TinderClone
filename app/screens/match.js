@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
 } from 'react-native'
 
+
 import * as firebase from 'firebase'
 import _ from 'lodash'
 
@@ -39,7 +40,6 @@ export default class Matches extends Component {
       firebase.database().ref('relationships').child(uid).on('value', snap => {
         const relations = snap.val() || []
         const allMatches = this.getOverlap(relations.liked, relations.likedBack)
-        console.log('allMatches', allMatches)
         const promises = allMatches.map(profileUid => {
           const foundProfile = _.find(this.state.matches, profile => profile.uid === profileUid)
           return foundProfile ? foundProfile : this.getUser(profileUid)
@@ -80,7 +80,8 @@ renderSeparator = (sectionID, rowID) => {
           renderRow={this.renderRow}
           renderSeparator={this.renderSeparator}
           enableEmptySections={true}>
-        </ListView> // listview is a core react native component designed to efficiently display vertically scrolling lists of changing data. Every listview needs a datasource
+        </ListView>
     )
   }
 }
+// listview is a core react native component designed to efficiently display vertically scrolling lists of changing data. Every listview needs a datasource
