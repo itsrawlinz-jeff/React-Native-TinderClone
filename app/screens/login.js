@@ -1,10 +1,9 @@
 import Expo from 'expo'
 import firebase from 'firebase'
 import React, {Component} from 'react'
-import {View, StyleSheet, ActivityIndicator} from 'react-native'
+import {View, StyleSheet, ActivityIndicator, Image} from 'react-native'
 import {NavigationActions} from 'react-navigation'
 import FacebookButton from '../components/facebookButton'
-
 
 export default class Login extends Component {
 
@@ -67,16 +66,9 @@ export default class Login extends Component {
     }
     const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync(APP_ID, options)
     if (type === 'success') {
-      const fields = [
-        'id',
-        'first_name',
-        'last_name',
-        'gender',
-        'birthday',
-        'work'
-      ]
+      const fields = ['id','first_name','last_name','gender','birthday','work']
       const response = await fetch(`https://graph.facebook.com/me?fields=${fields.toString()}&access_token=${token}`)
-      const userData = await response.json()
+      const userData = await response.json() //json function is asynchronous
       const {uid} = await this.authenticate(token)
       this.createUser(uid, userData)
     }
@@ -84,10 +76,19 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image style={{
+          flex:1,
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }} source={require('../images/loveGif.gif')}>
         {this.state.showSpinner ?
           <ActivityIndicator animating={this.state.showSpinner} /> :
           <FacebookButton onPress={this.login} />
         }
+      </Image>
       </View>
     )
   }
@@ -97,6 +98,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   }
 })

@@ -15,27 +15,26 @@ const {width, height} = Dimensions.get('window')
 
 export default class Card extends Component {
   componentWillMount() {
-    this.pan = new Animated.ValueXY()
-
-    this.cardPanResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+    this.pan = new Animated.ValueXY() // Animated.ValueXY is a special type of value that we use for driving 2d animation
+    this.cardPanResponder = PanResponder.create({ // object with responder callbacks
+      onStartShouldSetPanResponder: () => true, //responder should become the responder when it is touched
       onPanResponderTerminationRequest: () => false,
-      onPanResponderMove: Animated.event([
-        null,
-        {dx:this.pan.x, dy:this.pan.y},
+      onPanResponderMove: Animated.event([ // executed everytime the gesture moves
+        null, //ignore the native event
+        {dx:this.pan.x, dy:this.pan.y}, // gesture
       ]),
-      onPanResponderRelease: (e, {dx}) => {
+      onPanResponderRelease: (e, {dx}) => { // runs when the gesture is released
         const absDx = Math.abs(dx)
-        const direction = absDx / dx
+        const direction = absDx / dx // this will return either -1 or 1
         const swipedRight = direction > 0
 
         if (absDx > 120) {
           Animated.decay(this.pan, {
             velocity: {x:3 * direction, y:0},
             deceleration: 0.995,
-          }).start(() => this.props.onSwipeOff(swipedRight, this.props.profile.uid))
+          }).start(() => this.props.onSwipeOff(swipedRight, this.props.profile.uid))// start is passed a function once the animation is done
         } else {
-          Animated.spring(this.pan, {
+          Animated.spring(this.pan, { //centering the card
             toValue: {x:0, y:0},
             friction: 4.5,
           }).start()
@@ -51,7 +50,7 @@ export default class Card extends Component {
     const profileAge = moment().diff(profileBday, 'years')
     const fbImage = `https://graph.facebook.com/${id}/picture?height=500`
 
-    const rotateCard = this.pan.x.interpolate({
+    const rotateCard = this.pan.x.interpolate({ //interpolating the x value of our pan to degrees so that we can use it to rotate our card
       inputRange: [-200, 0, 200],
       outputRange: ['10deg', '0deg', '-10deg'],
     })

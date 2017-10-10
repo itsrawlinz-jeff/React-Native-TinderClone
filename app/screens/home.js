@@ -23,7 +23,7 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-    const {uid} = this.state.user
+    const {uid} = this.state.user // same as const uid = this.state.user.uid
     this.updateUserLocation(uid)
     firebase.database().ref('users').child(uid).on('value', snap => {
       const user = snap.val()
@@ -36,6 +36,7 @@ export default class Home extends Component {
     })
   }
 
+//will query the firebase database at a specific uid that we pass it this is an aynchronous function
   getUser = (uid) => {
     return firebase.database().ref('users').child(uid).once('value')
   }
@@ -46,6 +47,7 @@ export default class Home extends Component {
       .then(snap => snap.val() || {})
   }
 
+//get profiles that are in the distance specified by the user
   getProfiles = async (uid, distance) => {
     const geoFireRef = new GeoFire(firebase.database().ref('geoData'))
     const userLocation = await geoFireRef.get(uid)
@@ -54,6 +56,7 @@ export default class Home extends Component {
       center: userLocation,
       radius: distance, //km
     })
+    //what will happen if it finds profiles within the distance parameter
     geoQuery.on('key_entered', async (uid, location, distance) => {
       const user = await this.getUser(uid)
       const profiles = [...this.state.profiles, user.val()]
@@ -63,14 +66,11 @@ export default class Home extends Component {
   }
 
   updateUserLocation = async (uid) => {
-    const {Permissions, Location} = Expo
+    const {Permissions, Location} = Expo //function from exponent
     const {status} = await Permissions.askAsync(Permissions.LOCATION)
     if (status === 'granted') {
       const location = await Location.getCurrentPositionAsync({enableHighAccuracy: false})
-      // const {latitude, longitude} = location.coords
-      const latitude = 37.39239 //demo lat
-      const longitude = -122.09072 //demo lon
-
+      const {latitude, longitude} = location.coords
       const geoFireRef = new GeoFire(firebase.database().ref('geoData'))
       geoFireRef.set(uid, [latitude, longitude])
       console.log('Permission Granted', location)
@@ -97,6 +97,7 @@ export default class Home extends Component {
     }
   }
 
+//creating new cards
   cardStack = () => {
     const {profileIndex} = this.state
     return (
@@ -104,7 +105,7 @@ export default class Home extends Component {
         {this.state.profiles.slice(profileIndex, profileIndex + 3).reverse().map((profile) => {
           return (
             <Card
-              key={profile.id}
+              key={profile.id} //each users facebook ID
               profile={profile}
               onSwipeOff={this.nextCard}
             />
@@ -117,7 +118,7 @@ export default class Home extends Component {
   render() {
     return (
       <View>
-        <Nav />
+        <Nav navigation={this.props.navigation}/>
         <SimpleScroller
           screens={[
             <Profile user={this.state.user} />,
