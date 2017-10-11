@@ -55,6 +55,11 @@ export default class Card extends Component {
       inputRange: [-200, 0, 200],
       outputRange: ['10deg', '0deg', '-10deg'],
     })
+
+    const changeColor = this.pan.x.interpolate({
+      inputRange: [-100, 0, 100],
+      outputRange: ['red', 'white', 'rgb(0, 255, 18)'],
+    })
     const animatedStyle = {
       transform: [
         {translateX: this.pan.x},
@@ -66,7 +71,7 @@ export default class Card extends Component {
     return (
       <Animated.View
         {...this.cardPanResponder.panHandlers}
-        style={[styles.card, animatedStyle]}>
+        style={[styles.card, animatedStyle, {backgroundColor:changeColor}]}>
         <Image
           style={{flex:1}}
           source={{uri: fbImage}}
@@ -88,7 +93,6 @@ const styles = StyleSheet.create({
     height: height * 0.7,
     top: (height * 0.2) / 2,
     overflow: 'hidden',
-    backgroundColor: 'white',
     margin: 10,
     borderWidth: 1,
     borderColor: 'lightgrey',

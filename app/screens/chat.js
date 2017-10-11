@@ -27,7 +27,7 @@ export default class Chat extends Component {
         messages.push(message.val())
       })
       messages.reverse()
-      this.setState({messages})
+      this.setState({messages}) //then passed into gifted chat
     })
   }
 
