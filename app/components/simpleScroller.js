@@ -18,8 +18,8 @@ export default class SimpleScroller extends Component {
       onStartShouldSetPanResponder: () => false,
       onMoveShouldSetPanResponder: (e, {dx, dy}) => Math.abs(dx) > Math.abs(dy),
       onPanResponderGrant:() => {
-        this.pan.setOffset(this.pan._value)
-        this.pan.setValue(0)
+        this.pan.setOffset(this.pan._value) //sets a base value on top of whatever the animated value is
+        this.pan.setValue(0) //stops flickering of screen
       },
       //setOffset allows us to set a base value on top of whatever our animated value is
 
@@ -51,6 +51,7 @@ export default class SimpleScroller extends Component {
     }).start()
   }
 
+//scroll limits to stop scroller from being swiped off screen
   clamp = (num, min, max) => {
     return num <= min ? min : num >= max ? max : num
   }
@@ -61,7 +62,7 @@ export default class SimpleScroller extends Component {
         {translateX: this.pan},
       ],
     }
-    const scrollerWidth = this.props.screens.length * width
+    const scrollerWidth = this.props.screens.length * width //width of the screens Array
     return (
       <Animated.View
         //connecting the handlers from our pan responder to the handlers of our view using the spread operator
@@ -79,6 +80,6 @@ const styles = StyleSheet.create({
   scroller:{
     flex:1,
     backgroundColor: 'white',
-    flexDirection: 'row', //flex default is column
+    flexDirection: 'row', //flex default is column so without this we wouldnt be able to see the cards
   }
 })

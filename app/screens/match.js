@@ -20,7 +20,6 @@ export default class Matches extends Component {
   }
 
   componentWillMount(){
-    // this.setState({dataSource: this.state.dataSource.cloneWithRows(demoProfiles)})
     this.getMatches(this.props.user.uid)
   }
 

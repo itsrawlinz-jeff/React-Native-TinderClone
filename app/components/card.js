@@ -45,6 +45,7 @@ export default class Card extends Component {
 
   render() {
     const {birthday, first_name, work, id} = this.props.profile
+    //check to see if the work node exists
     const bio = (work && work[0] && work[0].position) ? work[0].position.name : null
     const profileBday = moment(birthday, 'MM/DD/YYYY')
     const profileAge = moment().diff(profileBday, 'years')
@@ -78,6 +79,7 @@ export default class Card extends Component {
     )
   }
 }
+// will only return the bio component only if it is not null or else it will just return an empty view component
 
 const styles = StyleSheet.create({
   card: {

@@ -1,6 +1,6 @@
 import Expo from 'expo'
 import React, {Component} from 'react'
-import {View} from 'react-native'
+import {View, Image} from 'react-native'
 import * as firebase from 'firebase'
 import GeoFire from 'geofire'
 
@@ -19,7 +19,7 @@ export default class Home extends Component {
   state = {
     profileIndex: 0,
     profiles: [],
-    user: this.props.navigation.state.params.user,
+    user: this.props.navigation.state.params.user, //to do with login
   }
 
   componentWillMount() {
@@ -41,10 +41,11 @@ export default class Home extends Component {
     return firebase.database().ref('users').child(uid).once('value')
   }
 
+//filtering swiped profiles out of the cardstack
   getSwiped = (uid) => {
     return firebase.database().ref('relationships').child(uid).child('liked')
       .once('value')
-      .then(snap => snap.val() || {})
+      .then(snap => snap.val() || {}) // {} this is incase the relationships mode does not exist
   }
 
 //get profiles that are in the distance specified by the user
@@ -79,6 +80,7 @@ export default class Home extends Component {
     }
   }
 
+//helper code for relationships function
   relate = (userUid, profileUid, status) => {
     let relationUpdate = {}
     relationUpdate[`${userUid}/liked/${profileUid}`] = status
@@ -87,11 +89,12 @@ export default class Home extends Component {
     firebase.database().ref('relationships').update(relationUpdate)
   }
 
+//relationships
   nextCard = (swipedRight, profileUid) => {
     const userUid = this.state.user.uid
     this.setState({profileIndex: this.state.profileIndex + 1})
     if (swipedRight) {
-      this.relate(userUid, profileUid, true)
+      this.relate(userUid, profileUid, true) //both liked and likedback will be updated
     } else {
       this.relate(userUid, profileUid, false)
     }
@@ -102,15 +105,24 @@ export default class Home extends Component {
     const {profileIndex} = this.state
     return (
       <View style={{flex:1}}>
-        {this.state.profiles.slice(profileIndex, profileIndex + 3).reverse().map((profile) => {
-          return (
-            <Card
-              key={profile.id} //each users facebook ID
-              profile={profile}
-              onSwipeOff={this.nextCard}
-            />
-          )
-        })}
+        <Image style={{
+            flex:1,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }} source={require('../images/loveGif.gif')}>
+          {this.state.profiles.slice(profileIndex, profileIndex + 3).reverse().map((profile) => {
+            return (
+              <Card
+                key={profile.id} //each users facebook ID
+                profile={profile}
+                onSwipeOff={this.nextCard}
+              />
+            )
+          })}
+        </Image>
       </View>
     )
   }

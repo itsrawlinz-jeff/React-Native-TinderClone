@@ -1,10 +1,9 @@
 //filter exports a default function that takes profiles and user as arguments and returns a new filtered profile array.
-//1 remove the user's card from the cardstack
 import _ from 'lodash'
 import moment from 'moment'
 
 export default (profiles, user, swipedProfiles) => {
-  const rejectMe = _.reject(profiles, profile => profile.uid === user.uid)
+  const rejectMe = _.reject(profiles, profile => profile.uid === user.uid) // rejects the user's profile
 
   const filterGender = _.filter(rejectMe, profile => {
     const userShowMen = user.showMen && profile.gender === 'male'
@@ -29,11 +28,11 @@ export default (profiles, user, swipedProfiles) => {
     return withinRangeUser && withinRangeProfile
   })
 
-  const filtered = _.uniqBy(filterAgeRange, 'uid')
+  const filtered = _.uniqBy(filterAgeRange, 'uid')//returns only unique profiles by using uid to find duplicates
 
   const filterSwiped = _.filter(filtered, profile => {
-    const swiped = profile.uid in swipedProfiles
-    return !swiped
+    const swiped = profile.uid in swipedProfiles //check to see if the profile uid is in the swipedProfiles object
+    return !swiped //we dont want to see the profiles we have swiped on
   })
 
   return filterSwiped

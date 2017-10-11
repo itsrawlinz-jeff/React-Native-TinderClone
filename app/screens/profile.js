@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text, Switch} from 'react-native'
+import {View, StyleSheet, Text, Switch, Image} from 'react-native'
 import CircleImage from '../components/circleImage'
 import Slider from 'react-native-multislider'
 import * as firebase from 'firebase'
@@ -25,7 +25,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.profile}>
-          <CircleImage facebookID={id} size={120} />
+          <CircleImage facebookID={id} size={130} />
           <Text style={{fontSize:20}}>{first_name}</Text>
           <Text style={{fontSize:15, color:'darkgrey'}}>{bio}</Text>
         </View>

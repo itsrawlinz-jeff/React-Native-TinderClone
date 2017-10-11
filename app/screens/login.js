@@ -8,7 +8,7 @@ import FacebookButton from '../components/facebookButton'
 export default class Login extends Component {
 
   state = {
-    showSpinner: true,
+    showSpinner: true, //this is for the activity indicator
   }
 
   //login authentication
@@ -31,6 +31,7 @@ export default class Login extends Component {
     })
   }
 
+//reset in the navigation stack
   goHome(user) {
     const resetAction = NavigationActions.reset({
       index: 0,
