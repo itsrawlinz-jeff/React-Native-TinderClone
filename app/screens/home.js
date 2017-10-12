@@ -67,7 +67,9 @@ export default class Home extends Component {
     geoQuery.on('key_entered', async (uid, location, distance) => {
       const user = await this.getUser(uid)
       const profiles = [...this.state.profiles, user.val()]
+      console.log(profiles, 'profiles')
       const filtered = filter(profiles, this.state.user, swipedProfiles)
+      console.log('filtered', filtered);
       this.setState({profiles: filtered})
     })
   }
