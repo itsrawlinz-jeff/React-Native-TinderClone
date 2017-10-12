@@ -6,11 +6,14 @@ import Nav from '../components/nav'
 import {GiftedChat} from 'react-native-gifted-chat'
 
 export default class Chat extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+        messages:[],
+        user: props.navigation.state.params.user,
+        profile: props.navigation.state.params.profile,
+      }
 
-  state={
-    messages:[],
-    user: this.props.navigation.state.params.user,
-    profile: this.props.navigation.state.params.profile,
   }
 
   componentWillMount() {

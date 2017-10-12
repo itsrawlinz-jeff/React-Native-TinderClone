@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19002,
-  "packagerPid": 38059,
-  "expoServerNgrokUrl": "https://h8-9ee.jheepark.clonetinder.exp.direct",
-  "packagerNgrokUrl": "https://packager.h8-9ee.jheepark.clonetinder.exp.direct",
-  "ngrokPid": 38074
+  "packagerPort": 19001,
+  "packagerPid": 50451,
+  "expoServerNgrokUrl": "https://a2-c5r.jheepark.clonetinder.exp.direct",
+  "packagerNgrokUrl": "https://packager.a2-c5r.jheepark.clonetinder.exp.direct",
+  "ngrokPid": 50467
 }

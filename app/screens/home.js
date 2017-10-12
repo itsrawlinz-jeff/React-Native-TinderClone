@@ -16,11 +16,17 @@ import Nav from '../components/nav'
 
 export default class Home extends Component {
 
-  state = {
-    profileIndex: 0,
-    profiles: [],
-    user: this.props.navigation.state.params.user, //to do with login
+  constructor(props) {
+    super(props);
+    // console.log('props', props);
+    this.state = {
+      profileIndex: 0,
+      profiles: [],
+      user: props.navigation.state.params.user, //to do with login
+    }
   }
+
+
 
   componentWillMount() {
     const {uid} = this.state.user // same as const uid = this.state.user.uid
@@ -130,7 +136,7 @@ export default class Home extends Component {
   render() {
     return (
       <View>
-        <Nav navigation={this.props.navigation}/>
+        <Nav navigation={this.props.navigation} user={this.state.user}/>
         <SimpleScroller
           screens={[
             <Profile user={this.state.user} />,

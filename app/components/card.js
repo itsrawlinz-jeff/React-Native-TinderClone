@@ -80,10 +80,25 @@ export default class Card extends Component {
       ],
     }
 
+    const styles = StyleSheet.create({
+      card: {
+        position: 'absolute',
+        width: width - 20,
+        height: height * 0.7,
+        top: (height * 0.2) / 2,
+        overflow: 'hidden',
+        borderColor: borderchangeColor,
+        backgroundColor: changeColor,
+        borderWidth: borderchangeWidth,
+        margin: 10,
+        borderRadius: 8,
+      },
+    })
+
     return (
       <Animated.View
         {...this.cardPanResponder.panHandlers}
-        style={[styles.card, animatedStyle, {backgroundColor:changeColor, borderColor:borderchangeColor, borderWidth:borderchangeWidth}]}>
+        style={[styles.card, animatedStyle]}>
         <Image
           style={{flex:1}}
           source={{uri: fbImage}}
@@ -97,15 +112,3 @@ export default class Card extends Component {
   }
 }
 // will only return the bio component only if it is not null or else it will just return an empty view component
-
-const styles = StyleSheet.create({
-  card: {
-    position: 'absolute',
-    width: width - 20,
-    height: height * 0.7,
-    top: (height * 0.2) / 2,
-    overflow: 'hidden',
-    margin: 10,
-    borderRadius: 8,
-  },
-})
