@@ -1,7 +1,7 @@
 # WDINDER
 A dating application for WDI students made for WDI Project 3 with react-native, fire-base and Expo XDE.
 
-Libraries and API's used include: geo-fire, gifted-chat, moment js and Facebook Graph API
+Libraries and API's used include: geo-fire, gifted-chat, moment.js and Facebook Graph API
 
 
 ![Profile Page](https://i.imgur.com/Q4KLnKs.png)
